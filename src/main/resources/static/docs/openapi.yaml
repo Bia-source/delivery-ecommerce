@@ -1,0 +1,202 @@
+openapi: 3.0.3
+info:
+  title: Ecommerce - Order / Product / Category Microservice API
+  description: >
+    API do microserviço de Orders/Products/Categories. O `customerId` é obtido do token JWT
+    (bearer). Este arquivo é um template baseado no código enviado e deve ser ajustado conforme necessário.
+  version: "1.0.0"
+servers:
+  - url: https://localhost:8080
+    description: Servidor LOCAL (ajuste conforme ambiente)
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # Enums
+    OrderStatus:
+      type: string
+      enum: [PENDING,DELIVERED,CANCELED]
+
+    PaymentType:
+      type: string
+      enum: [BILL, CREDIT_CARD,DEBIT_CARD, PIX]
+
+    # Product DTOs
+    ProductCreateDTO:
+      type: object
+      properties:
+        itemName:
+          type: string
+          example: "Camiseta gola polo"
+        unitPrice:
+          type: number
+          format: double
+          example: 79.9
+        quantity:
+          type: integer
+          example: 10
+        categoryId:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        barcode:
+          type: string
+          example: "0123456789012"
+      required:
+        - itemName
+        - unitPrice
+        - - quantity
+        - categoryId
+
+    ProductResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        itemName:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+          format: double
+        barcode:
+          type: string
+        category:
+          $ref: "#/components/schemas/CategoryProductResponseDTO"
+
+    # Category DTOs
+    CategoryProductCreateDTO:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    CategoryProductResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+       
+    OrderItemResponseDTO:
+      type: object
+      properties:
+        itemName:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: number
+          format: double
+        barcode:
+          type: string
+        categoryId:
+          type: string
+          format: uuid
+
+    OrderCreateDTO:
+      type: object
+      description: DTO usado pelo cliente para criar um pedido. O customerId é obtido do JWT.
+      properties:
+        customerId:
+          type: string
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemResponseDTO'
+        
+      required:
+        - items
+        - paymentType
+
+
+    OrderResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponseDTO'
+        totalAmount:
+          type: number
+          format: double
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        createdAt:
+          type: string
+          format: date-time
+
+  parameters:
+    orderIdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+paths:
+  /orders:
+    post:
+      summary: Criar um novo pedido
+      description: Cria um novo pedido. O `customerId` é extraído do token JWT (bearer). Retorna 201 Created com o OrderResponseDTO.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Dados do pedido
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateDTO'
+      responses:
+        '201':
+          description: Pedido criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponseDTO'
+      
+  /categories:
+    post:
+      summary: Criar categoria
+      description: Cria uma categoria de produto.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryProductCreateDTO'
+      responses:
+        '201':
+          description: Categoria criada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryProductResponseDTO'
+        
+ 
+security:
+  - bearerAuth: []

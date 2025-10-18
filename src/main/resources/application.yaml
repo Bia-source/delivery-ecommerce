@@ -1,0 +1,6 @@
+# --- SWAGGER CONFIG ---
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /docs/openapi.yaml   
+    disable-swagger-default-url: true
