@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.delivery.ecommerce.modules.order.enums.OrderPaymentTypeEnum;
 import com.delivery.ecommerce.modules.order.enums.OrderStatusEnum;
+import com.delivery.ecommerce.modules.product.entity.ProductEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -37,9 +38,9 @@ public class OrderEntity {
     private OrderPaymentTypeEnum paymentType;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItemEntity> items = new ArrayList<>();
+    private List<ProductEntity> items = new ArrayList<>();
 
-    private UUID customerId;
+    private String customerId;
 
     @CreationTimestamp
     private LocalDate createdAt;
@@ -76,19 +77,19 @@ public class OrderEntity {
         return createdAt;
     }
 
-    public List<OrderItemEntity> getItems() {
+    public List<ProductEntity> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItemEntity> items) {
+    public void setItems(List<ProductEntity> items) {
         this.items = items;
     }
 
-    public UUID getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(UUID customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

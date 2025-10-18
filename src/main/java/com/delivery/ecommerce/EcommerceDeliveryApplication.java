@@ -9,9 +9,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class EcommerceDeliveryApplication {
 
 	public static void main(String[] args) {
-		 Dotenv dotenv = Dotenv.load();
+		Dotenv dotenv = Dotenv.load();
 
-        // Define as variáveis no ambiente do Spring
         System.setProperty("SUPABASE_URL", dotenv.get("SUPABASE_URL"));
         System.setProperty("SUPABASE_USER", dotenv.get("SUPABASE_USER"));
         System.setProperty("SUPABASE_PASS", dotenv.get("SUPABASE_PASS"));

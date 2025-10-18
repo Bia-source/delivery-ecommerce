@@ -1,11 +1,12 @@
-package com.delivery.ecommerce.modules.order.DTO;
+package com.delivery.ecommerce.modules.product.DTO;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record OrderItemCreateDTO(
+public record ProductCreateDTO(
     String itemName,
     BigDecimal unitPrice,
     Integer quantity,
-    UUID categoryId
+    UUID categoryId,
+    String barcode
 ) {}

@@ -1,4 +1,4 @@
-package com.delivery.ecommerce.modules.order.entity;
+package com.delivery.ecommerce.modules.product.entity;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "order_categories")
-public class OrderCategoryEntity {
+public class CategoryProductEntity {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private UUID id;

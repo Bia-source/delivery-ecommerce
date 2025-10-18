@@ -1,10 +1,12 @@
-package com.delivery.ecommerce.modules.order.entity;
+package com.delivery.ecommerce.modules.product.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.delivery.ecommerce.modules.order.entity.OrderEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,22 +18,24 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "order_items")
-public class OrderItemEntity {
+@Table(name = "products")
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String itemName;
+    private String productName;
 
     private BigDecimal unitPrice;
 
     private Integer quantity;
 
+    private String barcode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id") 
-    private OrderCategoryEntity category;
+    private CategoryProductEntity category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -44,12 +48,12 @@ public class OrderItemEntity {
         return id;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public BigDecimal getUnitPrice() {
@@ -76,16 +80,24 @@ public class OrderItemEntity {
         this.order = orderId;
     }
 
-    public OrderCategoryEntity getCategory() {
+    public CategoryProductEntity getCategory() {
     return category;
     }
 
-    public void setCategory(OrderCategoryEntity category) {
+    public void setCategory(CategoryProductEntity category) {
         this.category = category;
     }
 
 
     public LocalDate getCreatedAt() {
         return createdAt;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
     }
 }

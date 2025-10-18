@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.delivery.ecommerce.modules.order.enums.OrderPaymentTypeEnum;
 import com.delivery.ecommerce.modules.order.enums.OrderStatusEnum;
+import com.delivery.ecommerce.modules.product.DTO.ProductResponseDTO;
 
 public record OrderResponseDTO(
      UUID id,
@@ -14,5 +15,5 @@ public record OrderResponseDTO(
      OrderStatusEnum status,
      OrderPaymentTypeEnum paymentType,
      LocalDate createdAt,
-     List<OrderItemResponseDTO> items
+     List<ProductResponseDTO> items
 ){}
