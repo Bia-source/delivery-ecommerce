@@ -1,7 +1,7 @@
 package com.delivery.ecommerce.modules.order.DTO;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +14,6 @@ public record OrderResponseDTO(
      BigDecimal amount, 
      OrderStatusEnum status,
      OrderPaymentTypeEnum paymentType,
-     LocalDate createdAt,
+     LocalDateTime createdAt,
      List<ProductResponseDTO> items
 ){}

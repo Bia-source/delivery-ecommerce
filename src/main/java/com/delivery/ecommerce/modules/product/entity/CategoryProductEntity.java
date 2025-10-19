@@ -1,6 +1,6 @@
 package com.delivery.ecommerce.modules.product.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "order_categories")
 public class CategoryProductEntity {
+
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private UUID id;
@@ -20,9 +21,9 @@ public class CategoryProductEntity {
     private String name;
 
     @CreationTimestamp
-    private LocalDate createdAt;
+    private LocalDateTime createdAt ;
 
-     public UUID getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -34,7 +35,7 @@ public class CategoryProductEntity {
         this.name = name;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 }

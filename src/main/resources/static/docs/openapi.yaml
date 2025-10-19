@@ -1,19 +1,47 @@
 openapi: 3.0.3
 info:
-  title: Ecommerce - Order / Product / Category Microservice API
+  title: Ecommerce - Order / Category Microservice API
   description: >
-    API do microserviço de Orders/Products/Categories. O `customerId` é obtido do token JWT
+    API do microserviço de Orders/Categories. O `customerId` é obtido do token JWT
     (bearer). Este arquivo é um template baseado no código enviado e deve ser ajustado conforme necessário.
   version: "1.0.0"
 servers:
-  - url: https://localhost:8080
+  - url: http://localhost:8080
     description: Servidor LOCAL (ajuste conforme ambiente)
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+ 
+  responses:
+    BadRequestSimpleMessage:
+      description: Erro de validação ou de negócio (HTTP 400)
+      content:
+        application/json:
+          schema:
+            type: object
+            oneOf:
+              - properties:
+                  message:
+                    type: string
+                    example: "O tipo de pagamento é obrigatório"
+              - properties:
+                  errors:
+                    type: object
+                    description: Lista de erros de validação, onde cada campo possui sua mensagem.
+                    additionalProperties:
+                      type: string
+                    example:
+                      customerId: "O ID do cliente é obrigatório"
+                      paymentType: "O tipo de pagamento é obrigatório"
+
+    InternalServerErrorSimple:
+      description: Erro interno no servidor (HTTP 500)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Erro interno no servidor"
 
   schemas:
     # Enums
@@ -36,13 +64,16 @@ components:
           type: number
           format: double
           example: 79.9
+          minimum: 0.01
+          exclusiveMinimum: true
         quantity:
           type: integer
           example: 10
+          minimum: 1
         categoryId:
           type: string
           format: uuid
-          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+          example: "a3763ba2-6761-4441-be88-e287db70f46e"
         barcode:
           type: string
           example: "0123456789012"
@@ -156,7 +187,7 @@ components:
         format: uuid
 
 paths:
-  /orders:
+  /order:
     post:
       summary: Criar um novo pedido
       description: Cria um novo pedido. O `customerId` é extraído do token JWT (bearer). Retorna 201 Created com o OrderResponseDTO.
@@ -169,6 +200,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OrderCreateDTO'
+      
       responses:
         '201':
           description: Pedido criado
@@ -176,8 +208,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderResponseDTO'
-      
-  /categories:
+        '400':
+          $ref: '#/components/responses/BadRequestSimpleMessage'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorSimple'
+
+  /category:
     post:
       summary: Criar categoria
       description: Cria uma categoria de produto.

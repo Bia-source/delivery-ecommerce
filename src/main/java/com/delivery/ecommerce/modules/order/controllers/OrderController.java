@@ -1,6 +1,8 @@
 package com.delivery.ecommerce.modules.order.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,8 @@ import com.delivery.ecommerce.modules.order.DTO.OrderCreateDTO;
 import com.delivery.ecommerce.modules.order.DTO.OrderResponseDTO;
 import com.delivery.ecommerce.modules.order.services.OrderCreateService;
 
+import jakarta.validation.Valid;
+
 @RequestMapping("/order")
 @RestController
 public class OrderController {
@@ -18,8 +22,8 @@ public class OrderController {
     private OrderCreateService orderCreateService;
 
     @PostMapping
-    public OrderResponseDTO createOrder(@RequestBody OrderCreateDTO order) {
-        var result = orderCreateService.execute(order);
-        return result;
+    public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderCreateDTO order) {
+        OrderResponseDTO created = orderCreateService.execute(order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 }

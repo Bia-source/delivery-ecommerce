@@ -1,7 +1,7 @@
 package com.delivery.ecommerce.modules.order.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +43,7 @@ public class OrderEntity {
     private String customerId;
 
     @CreationTimestamp
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     public UUID getId() {
         return id;
@@ -73,7 +73,7 @@ public class OrderEntity {
         this.paymentType = paymentType;
     }
 
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 

@@ -1,7 +1,7 @@
 package com.delivery.ecommerce.modules.product.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,7 +34,7 @@ public class ProductEntity {
     private String barcode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id") 
+    @JoinColumn(name = "category_id")
     private CategoryProductEntity category;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +42,7 @@ public class ProductEntity {
     private OrderEntity order;
 
     @CreationTimestamp
-    private LocalDate createdAt;
+    private LocalDateTime createdAt ;
 
     public UUID getId() {
         return id;
@@ -81,15 +81,14 @@ public class ProductEntity {
     }
 
     public CategoryProductEntity getCategory() {
-    return category;
+        return category;
     }
 
     public void setCategory(CategoryProductEntity category) {
         this.category = category;
     }
 
-
-    public LocalDate getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
